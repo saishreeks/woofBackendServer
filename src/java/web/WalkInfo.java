@@ -6,6 +6,7 @@
 package web;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -35,8 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "WalkInfo.findAll", query = "SELECT w FROM WalkInfo w")
     , @NamedQuery(name = "WalkInfo.findByWalkInfoId", query = "SELECT w FROM WalkInfo w WHERE w.walkInfoId = :walkInfoId")
-    , @NamedQuery(name = "WalkInfo.findByWalkInfoDate", query = "SELECT w FROM WalkInfo w WHERE w.walkInfoDate = :walkInfoDate")
-    , @NamedQuery(name = "WalkInfo.findByWalkTime", query = "SELECT w FROM WalkInfo w WHERE w.walkTime = :walkTime")})
+    , @NamedQuery(name = "WalkInfo.findByWalkInfoDate", query = "SELECT w FROM WalkInfo w WHERE w.walkInfoDate = :walkInfoDate")})
+    
 public class WalkInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,12 +49,15 @@ public class WalkInfo implements Serializable {
     @Column(name = "walk_info_date")
     @Temporal(TemporalType.DATE)
     private Date walkInfoDate;
-    @Column(name = "walk_time")
+    @Column(name = "from_time")
     @Temporal(TemporalType.TIME)
-    private Date walkTime;
+    private Date fromTime;
+    @Column(name = "to_time")
+    @Temporal(TemporalType.TIME)
+    private Date toTime;
     @JoinColumn(name = "dog_id", referencedColumnName = "dog_id")
     @ManyToOne
-    private DogDetails dogId;
+    private DogDetails dogId;   
     @JoinColumn(name = "walker_id", referencedColumnName = "owner_id")
     @ManyToOne
     private OwnerDetails walkerId;
@@ -83,12 +87,20 @@ public class WalkInfo implements Serializable {
         this.walkInfoDate = walkInfoDate;
     }
 
-    public Date getWalkTime() {
-        return walkTime;
+    public Date getFromTime() {
+        return fromTime;
     }
 
-    public void setWalkTime(Date walkTime) {
-        this.walkTime = walkTime;
+    public void setFromTime(Date walkTime) {
+        this.fromTime = fromTime;
+    }
+    
+    public Date getToTime() {
+        return toTime;
+    }
+
+    public void setToTime(Date walkTime) {
+        this.toTime = toTime;
     }
 
     public DogDetails getDogId() {

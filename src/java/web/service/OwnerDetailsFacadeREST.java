@@ -104,7 +104,7 @@ public class OwnerDetailsFacadeREST extends AbstractFacade<OwnerDetails> {
         
      //   .where(cq.equal(from.get("walkerId"), walkerId))
        //         .where(cq.notEqual(from.get("dogId").get("ownerId"), ownerDetails))
-        Predicate tempPredicate1 = cq.equal(from.get("email"),email);
+        Predicate tempPredicate1 = cq.equal(from.get("ownerEmail"),email);
         Predicate tempPredicate2 = cq.equal(from.get("password"), pswd);
         
         Predicate temp=cq.and(tempPredicate1,tempPredicate2);
@@ -116,9 +116,9 @@ public class OwnerDetailsFacadeREST extends AbstractFacade<OwnerDetails> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response find(@PathParam("id") Integer id) {
-        OwnerDetails owndb = super.find(id);       
-        return Response.ok(owndb,MediaType.APPLICATION_JSON_TYPE).build();
+    public OwnerDetails find(@PathParam("id") Integer id) {
+        return super.find(id);       
+        //return Response.ok(owndb,MediaType.APPLICATION_JSON_TYPE).build();
     }
     
     

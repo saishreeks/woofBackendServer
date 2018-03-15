@@ -180,8 +180,8 @@ conditions.add(cq.equal(fromWalkinfo.get("dogId").get("ownerId"),ownerDetails ))
         //cq.notEqual(subRoot.get("walkerId"),new OwnerDetails(id))
                 
           //conditions.add(cq.equal(subRoot.get("walkerId"),new OwnerDetails(id) ));
-          conditions.add(cq.equal(subRoot.get("walkerId"),new OwnerDetails(id) ));
-        conditions.add((root.get("walkInfoId").in(subRoot.get("reqId").get("walkInfoId")).not()));
+         // conditions.add(cq.notEqual(subRoot.get("walkerId"),new OwnerDetails(id) ));
+      //  conditions.add((root.get("walkInfoId").in(subRoot.get("reqId").get("walkInfoId")).not()));
 //        
           conditions.add(cq.equal(root.get("dogId").get("ownerId").get("city"), zip));
         conditions.add(cq.notEqual(root.get("dogId").get("ownerId"), new OwnerDetails(id)));

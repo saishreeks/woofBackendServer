@@ -13,7 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -39,7 +38,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "OwnerDetails.findByCountry", query = "SELECT o FROM OwnerDetails o WHERE o.country = :country")
     , @NamedQuery(name = "OwnerDetails.findByProfilepic", query = "SELECT o FROM OwnerDetails o WHERE o.profilepic = :profilepic")
     , @NamedQuery(name = "OwnerDetails.findByOwnerEmail", query = "SELECT o FROM OwnerDetails o WHERE o.ownerEmail = :ownerEmail")
-    , @NamedQuery(name = "OwnerDetails.findByOwnerMobile", query = "SELECT o FROM OwnerDetails o WHERE o.ownerMobile = :ownerMobile")})
+    , @NamedQuery(name = "OwnerDetails.findByOwnerMobile", query = "SELECT o FROM OwnerDetails o WHERE o.ownerMobile = :ownerMobile")
+    , @NamedQuery(name = "OwnerDetails.findByPassword", query = "SELECT o FROM OwnerDetails o WHERE o.password = :password")
+    , @NamedQuery(name = "OwnerDetails.findByZipcode", query = "SELECT o FROM OwnerDetails o WHERE o.zipcode = :zipcode")
+    , @NamedQuery(name = "OwnerDetails.findByToken", query = "SELECT o FROM OwnerDetails o WHERE o.token = :token")})
 public class OwnerDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -63,15 +65,23 @@ public class OwnerDetails implements Serializable {
     @Size(max = 50)
     @Column(name = "country")
     private String country;
-      @Size(max = 20)
+    @Size(max = 100)
     @Column(name = "profilepic")
     private String profilepic;
-    @Size(max = 50)
+    @Size(max = 20)
     @Column(name = "owner_email")
     private String ownerEmail;
-    @Size(max = 12)
+    @Size(max = 20)
     @Column(name = "owner_mobile")
     private String ownerMobile;
+    @Size(max = 20)
+    @Column(name = "password")
+    private String password;
+    @Column(name = "zipcode")
+    private Integer zipcode;
+    @Size(max = 65000)
+    @Column(name = "token")
+    private String token;
     @OneToMany(mappedBy = "walkerId")
     private Collection<WalkInfo> walkInfoCollection;
     @OneToMany(mappedBy = "walkerId")
@@ -142,7 +152,6 @@ public class OwnerDetails implements Serializable {
         this.profilepic = profilepic;
     }
 
-
     public String getOwnerEmail() {
         return ownerEmail;
     }
@@ -157,6 +166,30 @@ public class OwnerDetails implements Serializable {
 
     public void setOwnerMobile(String ownerMobile) {
         this.ownerMobile = ownerMobile;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Integer getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(Integer zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @XmlTransient
@@ -208,9 +241,7 @@ public class OwnerDetails implements Serializable {
 
     @Override
     public String toString() {
-        return "web.OwnerDetails[ ownerId=" + ownerId + " ]";
+        return "woofw.OwnerDetails[ ownerId=" + ownerId + " ]";
     }
-    
-    
     
 }

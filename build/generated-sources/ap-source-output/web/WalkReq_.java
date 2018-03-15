@@ -7,7 +7,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 import web.OwnerDetails;
 import web.WalkInfo;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-03-12T16:00:05")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-03-14T23:40:46")
 @StaticMetamodel(WalkReq.class)
 public class WalkReq_ { 
 

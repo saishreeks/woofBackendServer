@@ -38,7 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "DogDetails.findByDogId", query = "SELECT d FROM DogDetails d WHERE d.dogId = :dogId")
     , @NamedQuery(name = "DogDetails.findByName", query = "SELECT d FROM DogDetails d WHERE d.name = :name")
     , @NamedQuery(name = "DogDetails.findByDob", query = "SELECT d FROM DogDetails d WHERE d.dob = :dob")
-    , @NamedQuery(name = "DogDetails.findByPic", query = "SELECT d FROM DogDetails d WHERE d.pic = :pic")})
+    , @NamedQuery(name = "DogDetails.findByPic", query = "SELECT d FROM DogDetails d WHERE d.pic = :pic")
+    , @NamedQuery(name = "DogDetails.findByBreed", query = "SELECT d FROM DogDetails d WHERE d.breed = :breed")})
 public class DogDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,18 +48,18 @@ public class DogDetails implements Serializable {
     @Basic(optional = false)
     @Column(name = "dog_id")
     private Integer dogId;
-     @Size(max = 100)
-    @Column(name = "breed")
-    private String breedName;
     @Size(max = 50)
     @Column(name = "name")
     private String name;
     @Column(name = "DOB")
     @Temporal(TemporalType.DATE)
     private Date dob;
-    @Size(max = 20)
+    @Size(max = 100)
     @Column(name = "pic")
     private String pic;
+    @Size(max = 50)
+    @Column(name = "breed")
+    private String breed;
     @OneToMany(mappedBy = "dogId")
     private Collection<Matereq> matereqCollection;
     @OneToMany(mappedBy = "dogId")
@@ -95,14 +96,6 @@ public class DogDetails implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    
-     public String getBreed() {
-        return breedName;
-    }
-
-    public void setBreed(String breedName) {
-        this.breedName = breedName;
-    }
 
     public Date getDob() {
         return dob;
@@ -118,6 +111,14 @@ public class DogDetails implements Serializable {
 
     public void setPic(String pic) {
         this.pic = pic;
+    }
+
+    public String getBreed() {
+        return breed;
+    }
+
+    public void setBreed(String breed) {
+        this.breed = breed;
     }
 
     @XmlTransient
@@ -195,7 +196,7 @@ public class DogDetails implements Serializable {
 
     @Override
     public String toString() {
-        return "web.DogDetails[ dogId=" + dogId + " ]";
+        return "woofw.DogDetails[ dogId=" + dogId + " ]";
     }
     
 }

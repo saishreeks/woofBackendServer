@@ -9,6 +9,10 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -18,7 +22,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import web.DogDetails;
 import web.Matereq;
+import web.OwnerDetails;
+import web.WalkReq;
 
 /**
  *
@@ -60,6 +67,55 @@ public class MatereqFacadeREST extends AbstractFacade<Matereq> {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Matereq find(@PathParam("id") Integer id) {
         return super.find(id);
+    }
+    
+    @GET
+    @Path("requestedMateList/{ownerid}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Matereq> requestedWalk(@PathParam("ownerid") Integer id)  {
+        //return super.findAll();
+        CriteriaBuilder cq = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Matereq> q = cq.createQuery(Matereq.class);
+        Root<Matereq>from=q.from(Matereq.class);
+        OwnerDetails ownerDetails =new OwnerDetails();
+        ownerDetails.setOwnerId(id);
+        
+     //   .where(cq.equal(from.get("walkerId"), walkerId))
+       //         .where(cq.notEqual(from.get("dogId").get("ownerId"), ownerDetails))
+        Predicate tempPredicate1 = cq.notEqual(from.get("reqId").get("dogId").get("ownerId"),ownerDetails);
+        Predicate tempPredicate2 = cq.equal(from.get("reqId").get("dogId2"), new DogDetails());
+        Predicate tempPredicate3 = cq.equal(from.get("dogId").get("ownerId"), ownerDetails);
+        Predicate temp=cq.and(tempPredicate1,tempPredicate2, tempPredicate3);
+        
+        q.select(from).where(temp);
+        return em.createQuery(q).getResultList();
+               
+        
+    }
+    
+    @GET
+    @Path("pendingRequestMateList/{ownerid}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Matereq> pendingRequestWalkList(@PathParam("ownerid") Integer id)  {
+        //return super.findAll();
+        
+        CriteriaBuilder cq = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Matereq> q = cq.createQuery(Matereq.class);
+        Root<Matereq>from=q.from(Matereq.class);
+        OwnerDetails ownerDetails =new OwnerDetails();
+        ownerDetails.setOwnerId(id);
+        //DogDetails dogDetails =new DogDetails();
+        
+        Predicate tempPredicate1 = cq.equal(from.get("reqId").get("dogId").get("ownerId"),ownerDetails);
+        Predicate tempPredicate2 = cq.equal(from.get("reqId").get("dogId2"), new DogDetails());
+        //Predicate tempPredicate3 = cq.equal(from.get("walkerId"), ownerDetails);
+        Predicate temp=cq.and(tempPredicate1,tempPredicate2);
+        
+        
+        
+        q.select(from).where(temp);
+        return em.createQuery(q).getResultList();
+               
     }
 
     @GET
