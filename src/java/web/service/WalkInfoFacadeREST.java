@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -153,79 +154,25 @@ conditions.add(cq.equal(fromWalkinfo.get("dogId").get("ownerId"),ownerDetails ))
         return typedQuery.getResultList();
         
     }
-  @GET
+  
+     @GET
     @Path("availableWalkList/{ownerid}/{zipcode}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<WalkInfo> availableRequestWalkList(@PathParam("ownerid") Integer id, @PathParam("zipcode") Integer zip)  {
-        //return super.findAll();
-      
-//        
-//        Query q=  em.createNativeQuery(
-//"select w.* from walk_info as w " +
-//"join dog_details as d on w.dog_id=d.id " +
-//"join owner_details o on o.owner_id=d.owner_id " +
-//" where o.owner_id!=3  and walk_info_id not in (select req_id from walk_req where walker_id=3) and walker_id is null");
-//            List<WalkInfo> res=q.getResultList();
-//            return res;
-            
+       
+         Query sql=  em.createNativeQuery("select w.* from walk_info as w " +
+                                "join dog_details as d on w.dog_id=d.dog_id " +
+                                "join owner_details o on o.owner_id=d.owner_id " +
+                                " where o.owner_id!=? and o.city=?  and walk_info_id not in (select req_id from walk_req where walker_id=?) and walker_id is null",WalkInfo.class);
+         sql.setParameter(1, id);
+         sql.setParameter(2, zip);
+         sql.setParameter(3, id);
+         
+         
+         
         
-        
-         CriteriaBuilder cq = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<WalkInfo> q = cq.createQuery(WalkInfo.class);
-        Root<WalkInfo> root = q.from(WalkInfo.class);
-        Subquery<WalkReq> subq=q.subquery(WalkReq.class);
-        Root<WalkReq>  subRoot=subq.from(WalkReq.class);
-        subq.select(subRoot);
-        List<Predicate> conditions = new ArrayList<>();
-        //cq.notEqual(subRoot.get("walkerId"),new OwnerDetails(id))
-                
-          //conditions.add(cq.equal(subRoot.get("walkerId"),new OwnerDetails(id) ));
-         // conditions.add(cq.notEqual(subRoot.get("walkerId"),new OwnerDetails(id) ));
-      //  conditions.add((root.get("walkInfoId").in(subRoot.get("reqId").get("walkInfoId")).not()));
-//        
-          conditions.add(cq.equal(root.get("dogId").get("ownerId").get("city"), zip));
-        conditions.add(cq.notEqual(root.get("dogId").get("ownerId"), new OwnerDetails(id)));
-        conditions.add(cq.equal(root.get("walkerId"), new OwnerDetails()));
-     
-        TypedQuery<WalkInfo> typedQuery = em.createQuery(q.select(root)
-        .where(conditions.toArray(new Predicate[] {})).distinct(true)
-        
-);
-        
-        return typedQuery.getResultList();          
-       // fromWalkinfo.
-        //        em.createNat
-        //Join<WalkInfo, WalkReq> details = fromWalkinfo.join("walkReqCollection");
-        
-        
-        
-        ///OwnerDetails ownerDetails =new OwnerDetails();
-        //ownerDetails.setOwnerId(id);
-        
-        //conditions.add(cq.notEqual(details.get("walkerId"),ownerDetails ));
-       // conditions.add(cq.equal(fromWalkinfo.get("dogId").get("ownerId").get("city"), zip));
-        //conditions.add(cq.notEqual(fromWalkinfo.get("dogId").get("ownerId"), ownerDetails));
-        //conditions.add(cq.equal(fromWalkinfo.get("walkerId"), new OwnerDetails()));
-        
-      
-//        
-//        CriteriaBuilder cq = getEntityManager().getCriteriaBuilder();
-//        CriteriaQuery<WalkInfo> q = cq.createQuery(WalkInfo.class);
-//        Root<WalkInfo>from=q.from(WalkInfo.class);
-//        OwnerDetails ownerDetails =new OwnerDetails();
-//        ownerDetails.setOwnerId(id);
-//        OwnerDetails walkerId=new OwnerDetails();
-//     //   .where(cq.equal(from.get("walkerId"), walkerId))
-//       //         .where(cq.notEqual(from.get("dogId").get("ownerId"), ownerDetails))
-//        Predicate tempPredicate1 = cq.equal( from.get("dogId").get("ownerId").get("city"), zip);
-//        Predicate tempPredicate2 = cq.notEqual(from.get("dogId").get("ownerId"), ownerDetails);
-//        Predicate tempPredicate3 = cq.equal(from.get("walkerId"), walkerId);
-//        
-//        Predicate temp=cq.and(tempPredicate1,tempPredicate2,tempPredicate3);
-//        
-//        q.select(from).where(temp);
-//        return em.createQuery(q).getResultList();
-
+        return sql.getResultList();          
+       
     }
     
      

@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -126,29 +127,15 @@ conditions.add(cq.equal(fromMateInfo.get("dogId").get("ownerId"),ownerDetails));
     @Path("availableMateList/{dogid}/{zipcode}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Mateinfo> availableRequestMateList(@PathParam("dogid") Integer id, @PathParam("zipcode") Integer zip)  {
-    CriteriaBuilder cq = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<Mateinfo> q = cq.createQuery(Mateinfo.class);
-        Root<Mateinfo> root = q.from(Mateinfo.class);
-        Subquery<Matereq> subq=q.subquery(Matereq.class);
-        Root<Matereq>  subRoot=subq.from(Matereq.class);
-        subq.select(subRoot);
-        List<Predicate> conditions = new ArrayList<>();
-        //cq.notEqual(subRoot.get("walkerId"),new OwnerDetails(id))
-                
-          //conditions.add(cq.equal(subRoot.get("walkerId"),new OwnerDetails(id) ));
-          conditions.add(cq.equal(subRoot.get("dogId"),new DogDetails(id) ));
-        conditions.add((root.get("mateInfoId").in(subRoot.get("reqId").get("mateInfoId")).not()));
-//        
-          conditions.add(cq.equal(root.get("dogId").get("ownerId").get("city"), zip));
-        conditions.add(cq.notEqual(root.get("dogId"), new DogDetails(id)));
-        conditions.add(cq.equal(root.get("dogId2"), new DogDetails()));
-     
-        TypedQuery<Mateinfo> typedQuery = em.createQuery(q.select(root)
-        .where(conditions.toArray(new Predicate[] {})).distinct(true)
+    Query sql=  em.createNativeQuery("select m.* from mate_info as m join dog_details as d on m.dog_id=d.dog_id join owner_details o on o.owner_id=d.owner_id  where o.owner_id!=3 and o.city=95050  and mate_info_id not in (select req_id from mate_req mr join dog_details d1 on d1.dog_id=mr.dog_id where d1.owner_id=3 ) and m.dog_id_2 is null",Mateinfo.class);
+         sql.setParameter(1, id);
+         sql.setParameter(2, zip);
+         sql.setParameter(3, id);
+         
+         
+         
         
-);
-        
-        return typedQuery.getResultList(); 
+        return sql.getResultList();
     }
     
     @GET

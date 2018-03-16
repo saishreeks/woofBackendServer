@@ -11,12 +11,13 @@ import web.Matereq;
 import web.OwnerDetails;
 import web.WalkInfo;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-03-14T23:40:46")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-03-15T19:49:11")
 @StaticMetamodel(DogDetails.class)
 public class DogDetails_ { 
 
     public static volatile CollectionAttribute<DogDetails, Mateinfo> mateinfoCollection;
     public static volatile SingularAttribute<DogDetails, Integer> dogId;
+    public static volatile SingularAttribute<DogDetails, String> gender;
     public static volatile CollectionAttribute<DogDetails, WalkInfo> walkInfoCollection;
     public static volatile SingularAttribute<DogDetails, Date> dob;
     public static volatile CollectionAttribute<DogDetails, Mateinfo> mateinfoCollection1;

@@ -8,7 +8,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 import web.DogDetails;
 import web.Matereq;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-03-14T23:40:46")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-03-15T19:49:11")
 @StaticMetamodel(Mateinfo.class)
 public class Mateinfo_ { 
 

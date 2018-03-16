@@ -29,8 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 /**
  *
  * @author saishree
- */
-@Entity
+ */@Entity
 @Table(name = "Dog_Details")
 @XmlRootElement
 @NamedQueries({
@@ -42,12 +41,20 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "DogDetails.findByBreed", query = "SELECT d FROM DogDetails d WHERE d.breed = :breed")})
 public class DogDetails implements Serializable {
 
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "dog_id")
     private Integer dogId;
+    
+    
+    
+    @Size(max = 20)
+    @Column(name = "gender")
+    private String gender;
+    
     @Size(max = 50)
     @Column(name = "name")
     private String name;
@@ -72,7 +79,7 @@ public class DogDetails implements Serializable {
     private Collection<Dogpics> dogpicsCollection;
     @JoinColumn(name = "owner_id", referencedColumnName = "owner_id")
     @ManyToOne
-    private OwnerDetails ownerId;
+     private OwnerDetails ownerId;
 
     public DogDetails() {
     }
@@ -197,6 +204,14 @@ public class DogDetails implements Serializable {
     @Override
     public String toString() {
         return "woofw.DogDetails[ dogId=" + dogId + " ]";
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
     
 }

@@ -12,6 +12,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -56,7 +57,7 @@ public class WalkInfo implements Serializable {
     @Temporal(TemporalType.TIME)
     private Date toTime;
     @JoinColumn(name = "dog_id", referencedColumnName = "dog_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private DogDetails dogId;   
     @JoinColumn(name = "walker_id", referencedColumnName = "owner_id")
     @ManyToOne

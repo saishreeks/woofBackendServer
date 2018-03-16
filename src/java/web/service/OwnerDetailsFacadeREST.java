@@ -65,7 +65,7 @@ public class OwnerDetailsFacadeREST extends AbstractFacade<OwnerDetails> {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response edit(@PathParam("id") Integer id, OwnerDetails entity) {
         try{
-          String fileStartingLoc = "/Users/saishree/Desktop/Photos/";
+          String fileStartingLoc = "/Users/saishree/NetBeansProjects/WoofServer/web/images/";
             System.out.println("hit this api to upload");
             File file=new File(fileStartingLoc + id + ".jpg");
             FileOutputStream fos = new FileOutputStream(file); 
@@ -129,7 +129,7 @@ public class OwnerDetailsFacadeREST extends AbstractFacade<OwnerDetails> {
         String imageString = null;
             String encodedImage = null;byte[] ba = null;
         try {
-            String fileStartingLoc = "/Users/saishree/Desktop/Photos/";
+            String fileStartingLoc = "/Users/saishree/NetBeansProjects/WoofServer/web/images/";
             File originalFile = new File(fileStartingLoc+id+".jpg");
             BufferedImage img = ImageIO.read(originalFile);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
